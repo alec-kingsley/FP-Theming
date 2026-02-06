@@ -1,0 +1,8 @@
+-Wextra
+-Wall
+-Wimplicit
+-pedantic
+-Wreturn-type
+-Wformat
+-std=c89
+-c

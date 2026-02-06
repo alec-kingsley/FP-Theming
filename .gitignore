@@ -1,0 +1,4 @@
+*.o
+palette_load.c
+palette_gen
+palette_read
