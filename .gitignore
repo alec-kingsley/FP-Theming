@@ -1,5 +1,6 @@
 *.o
-palette_load.c
+*.pas
+*palette_load.c
 palette_gen
 palette_read
 fp.ini
