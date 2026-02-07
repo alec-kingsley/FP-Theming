@@ -45,13 +45,47 @@ Both of the above links document some of the color coding with more detail than 
 
 To edit a theme, first run
 
-`make palette_read`
+```sh
+make palette_read`
+```
 
-Then, run `./palette_read <theme>` with the theme you want to edit.
+Then, run
+
+```sh
+./palette_read <theme>
+```
+
+with the theme you want to edit.
 
 After this, you can edit the newly generated `palette_load.c` file however you wish.
 
-Once you're done making changes, run `make palette_gen` and run `./palette_gen`.
+`palette_load.c` has a function for each palette, defining the background and foreground color of
+each entry, in thde form `COLOR(BACKGROUND, FOREGROUND)`
+
+For example, this is what the `build_syntax_palette` function looks like for the default theme.
+
+```c
+void build_syntax_palette(palette_entry_t *palette) {
+	palette[syntax_whitespace] = COLOR(BLUE, LIGHT_BLUE);
+	palette[syntax_comments] = COLOR(BLUE, GRAY_1);
+	palette[syntax_reserved_words] = COLOR(BLUE, WHITE);
+	palette[syntax_identifiers] = COLOR(BLUE, LIGHT_YELLOW);
+	palette[syntax_strings] = COLOR(BLUE, LIGHT_CYAN);
+	palette[syntax_numbers] = COLOR(BLUE, CYAN);
+	palette[syntax_hex_numbers] = COLOR(BLUE, CYAN);
+	palette[syntax_assembler] = COLOR(BLUE, LIGHT_GREEN);
+	palette[syntax_symbols] = COLOR(BLUE, LIGHT_YELLOW);
+	palette[syntax_directives] = COLOR(BLUE, LIGHT_RED);
+	palette[syntax_tabs] = COLOR(BLUE, LIGHT_BLUE);
+}
+```
+
+Once you're done making changes, run
+
+```sh
+make palette_gen && ./palette_gen
+```
+
 This will output a new `[Colors]` section to `stdout`, which you can paste in your `fp.ini` file.
 
 ### Blue/Cyan/Gray Windows/Dialogs
