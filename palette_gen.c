@@ -18,12 +18,9 @@ void output_palette(palette_entry_t *palette) {
 
 int main(void) {
     palette_entry_t palette[PALETTE_SIZE];
-    size_t i;
 
     /* write palette */
-    for (i = 0; i < PALETTE_SIZE; i++) {
-        palette[i] = 0;
-    }
+    build_default_palette(palette);
 
     /* create palette */
     build_blue_window_palette(palette);

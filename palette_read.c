@@ -98,6 +98,7 @@ static void palette_read(palette_entry_t *palette, FILE *ini_file) {
                             color_string(value >> 4), color_string((value & 0xf))
 static void write_palette_load_c(palette_entry_t *palette) {
     FILE *palette_load_c = fopen("palette_load.c", "w");
+    size_t i;
     if (palette_load_c == NULL) {
         printf("Failed to open palette_load.c for writing");
         exit(1);
@@ -124,6 +125,24 @@ static void write_palette_load_c(palette_entry_t *palette) {
     fprintf(palette_load_c, "#define WHITE 0xf\n\n");
 
     fprintf(palette_load_c, "#define COLOR(background, foreground) (palette_entry_t)((background << 4) | foreground)\n\n");
+
+    fprintf(palette_load_c, "void build_default_palette(palette_entry_t *palette) {\n");
+    fprintf(palette_load_c, "\tsize_t i;\n");
+    fprintf(palette_load_c, "\tpalette_entry_t default_palette[] = {");
+    for (i = 0; i < PALETTE_SIZE; i++) {
+        if (i % (PALETTE_ENTRIES_PER_LINE / 2) == 0) {
+            fprintf(palette_load_c, "\n\t\t");
+        }
+        fprintf(palette_load_c, "0x%02x", palette[i]);
+        if (i + 1 != PALETTE_SIZE) {
+            fprintf(palette_load_c, ", ");
+        }
+    }
+    fprintf(palette_load_c, "\n\t};\n");
+    fprintf(palette_load_c, "\tfor (i = 0; i < PALETTE_SIZE; i++) {\n");
+    fprintf(palette_load_c, "\t\tpalette[i] = default_palette[i];\n");
+    fprintf(palette_load_c, "\t}\n");
+    fprintf(palette_load_c, "}\n\n");
 
     fprintf(palette_load_c, "void build_blue_window_palette(palette_entry_t *palette) {\n");
     fprintf(palette_load_c, entry_string(palette[BLUE_WINDOW_PALETTE_OFF + window_frame_passive]));
@@ -176,6 +195,7 @@ static void write_palette_load_c(palette_entry_t *palette) {
     fprintf(palette_load_c, entry_string(palette[BLUE_DIALOG_PALETTE_OFF + dialog_normal_cluster]));
     fprintf(palette_load_c, entry_string(palette[BLUE_DIALOG_PALETTE_OFF + dialog_selected_cluster]));
     fprintf(palette_load_c, entry_string(palette[BLUE_DIALOG_PALETTE_OFF + dialog_shortcut_cluster]));
+    fprintf(palette_load_c, entry_string(palette[BLUE_DIALOG_PALETTE_OFF + dialog_disabled_cluster]));
 
     fprintf(palette_load_c, entry_string(palette[BLUE_DIALOG_PALETTE_OFF + dialog_normal_input]));
     fprintf(palette_load_c, entry_string(palette[BLUE_DIALOG_PALETTE_OFF + dialog_selected_input]));
@@ -192,7 +212,6 @@ static void write_palette_load_c(palette_entry_t *palette) {
     fprintf(palette_load_c, entry_string(palette[BLUE_DIALOG_PALETTE_OFF + dialog_list_divider]));
 
     fprintf(palette_load_c, entry_string(palette[BLUE_DIALOG_PALETTE_OFF + dialog_info_pane]));
-    fprintf(palette_load_c, entry_string(palette[BLUE_DIALOG_PALETTE_OFF + dialog_disabled_cluster]));
     fprintf(palette_load_c, "}\n\n");
     
 

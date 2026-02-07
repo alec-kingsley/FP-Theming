@@ -46,8 +46,9 @@ typedef enum {
     dialog_normal_cluster,
     dialog_selected_cluster,
     dialog_shortcut_cluster,
+    dialog_disabled_cluster = 29,
 
-    dialog_normal_input,
+    dialog_normal_input = 17,
     dialog_selected_input,
     dialog_input_arrow,
 
@@ -61,8 +62,7 @@ typedef enum {
     dialog_focused_list,
     dialog_list_divider,
 
-    dialog_info_pane,
-    dialog_disabled_cluster
+    dialog_info_pane
 } dialog_palette_entry_t;
 
 typedef enum {

@@ -3,6 +3,8 @@
 
 #include "palette_info.h"
 
+void build_default_palette(palette_entry_t *palette);
+
 void build_blue_window_palette(palette_entry_t *palette);
 void build_gray_window_palette(palette_entry_t *palette);
 void build_cyan_window_palette(palette_entry_t *palette);

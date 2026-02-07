@@ -33,7 +33,11 @@ each enum has a name taken from the FPC source code.
 
 The `themes/` folder contains some pre-made themes.
 
-`default.fp.ini` is the default theme for FP
+`default_color.fp.ini` is the default theme for FP
+
+`default_black_white.fp.ini` is a default theme in the FPC source code unused for FP
+
+`default_monochrome.fp.ini` is another default theme in the FPC source code unused for FP
 
 `bunnyworks.fp.ini` comes from [here](https://mooncore.eu/bunny/txt/fpidecol.htm)
 
