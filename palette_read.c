@@ -76,6 +76,26 @@ static void palette_read(palette_entry_t *palette, FILE *ini_file) {
     fclose(ini_file);
 }
 
+#define color_string(value) (value == 0x0 ? "BLACK" \
+                           : value == 0x1 ? "BLUE" \
+                           : value == 0x2 ? "GREEN" \
+                           : value == 0x3 ? "CYAN" \
+                           : value == 0x4 ? "RED" \
+                           : value == 0x5 ? "MAGENTA" \
+                           : value == 0x6 ? "BROWN" \
+                           : value == 0x7 ? "GRAY_1" \
+                           : value == 0x8 ? "GRAY_2" \
+                           : value == 0x9 ? "LIGHT_BLUE" \
+                           : value == 0xa ? "LIGHT_GREEN" \
+                           : value == 0xb ? "LIGHT_CYAN" \
+                           : value == 0xc ? "LIGHT_RED" \
+                           : value == 0xd ? "LIGHT_MAGENTA" \
+                           : value == 0xe ? "LIGHT_YELLOW" \
+                           : value == 0xf ? "WHITE" \
+                           : "ERROR" )
+
+#define entry_string(value) "\t" #value " = COLOR(%s, %s);\n", \
+                            color_string(value >> 4), color_string((value & 0xf))
 static void write_palette_load_c(palette_entry_t *palette) {
     FILE *palette_load_c = fopen("palette_load.c", "w");
     if (palette_load_c == NULL) {
@@ -86,241 +106,259 @@ static void write_palette_load_c(palette_entry_t *palette) {
     fprintf(palette_load_c, "#include \"palette_load.h\"\n");
     fprintf(palette_load_c, "#include \"palette_info.h\"\n\n");
 
+    fprintf(palette_load_c, "#define BLACK 0x0\n");
+    fprintf(palette_load_c, "#define BLUE 0x1\n");
+    fprintf(palette_load_c, "#define GREEN 0x2\n");
+    fprintf(palette_load_c, "#define CYAN 0x3\n");
+    fprintf(palette_load_c, "#define RED 0x4\n");
+    fprintf(palette_load_c, "#define MAGENTA 0x5\n");
+    fprintf(palette_load_c, "#define BROWN 0x6\n");
+    fprintf(palette_load_c, "#define GRAY_1 0x7\n");
+    fprintf(palette_load_c, "#define GRAY_2 0x8\n");
+    fprintf(palette_load_c, "#define LIGHT_BLUE 0x9\n");
+    fprintf(palette_load_c, "#define LIGHT_GREEN 0xa\n");
+    fprintf(palette_load_c, "#define LIGHT_CYAN 0xb\n");
+    fprintf(palette_load_c, "#define LIGHT_RED 0xc\n");
+    fprintf(palette_load_c, "#define LIGHT_MAGENTA 0xd\n");
+    fprintf(palette_load_c, "#define LIGHT_YELLOW 0xe\n");
+    fprintf(palette_load_c, "#define WHITE 0xf\n\n");
+
+    fprintf(palette_load_c, "#define COLOR(background, foreground) (palette_entry_t)((background << 4) | foreground)\n\n");
 
     fprintf(palette_load_c, "void build_blue_window_palette(palette_entry_t *palette) {\n");
-    fprintf(palette_load_c, "\tpalette[BLUE_WINDOW_PALETTE_OFF + window_frame_passive] = 0x%02x;\n", palette[BLUE_WINDOW_PALETTE_OFF + window_frame_passive]);
-    fprintf(palette_load_c, "\tpalette[BLUE_WINDOW_PALETTE_OFF + window_frame_active] = 0x%02x;\n", palette[BLUE_WINDOW_PALETTE_OFF + window_frame_active]);
-    fprintf(palette_load_c, "\tpalette[BLUE_WINDOW_PALETTE_OFF + window_frame_icon] = 0x%02x;\n", palette[BLUE_WINDOW_PALETTE_OFF + window_frame_icon]);
-    fprintf(palette_load_c, "\tpalette[BLUE_WINDOW_PALETTE_OFF + window_scroll_bar_page] = 0x%02x;\n", palette[BLUE_WINDOW_PALETTE_OFF + window_scroll_bar_page]);
-    fprintf(palette_load_c, "\tpalette[BLUE_WINDOW_PALETTE_OFF + window_scroll_bar_icon] = 0x%02x;\n", palette[BLUE_WINDOW_PALETTE_OFF + window_scroll_bar_icon]);
-    fprintf(palette_load_c, "\tpalette[BLUE_WINDOW_PALETTE_OFF + window_normal_text] = 0x%02x;\n", palette[BLUE_WINDOW_PALETTE_OFF + window_normal_text]);
+    fprintf(palette_load_c, entry_string(palette[BLUE_WINDOW_PALETTE_OFF + window_frame_passive]));
+    fprintf(palette_load_c, entry_string(palette[BLUE_WINDOW_PALETTE_OFF + window_frame_active]));
+    fprintf(palette_load_c, entry_string(palette[BLUE_WINDOW_PALETTE_OFF + window_frame_icon]));
+    fprintf(palette_load_c, entry_string(palette[BLUE_WINDOW_PALETTE_OFF + window_scroll_bar_page]));
+    fprintf(palette_load_c, entry_string(palette[BLUE_WINDOW_PALETTE_OFF + window_scroll_bar_icon]));
+    fprintf(palette_load_c, entry_string(palette[BLUE_WINDOW_PALETTE_OFF + window_normal_text]));
     fprintf(palette_load_c, "}\n\n");
 
 
     fprintf(palette_load_c, "void build_cyan_window_palette(palette_entry_t *palette) {\n");
-    fprintf(palette_load_c, "\tpalette[CYAN_WINDOW_PALETTE_OFF + window_frame_passive] = 0x%02x;\n", palette[CYAN_WINDOW_PALETTE_OFF + window_frame_passive]);
-    fprintf(palette_load_c, "\tpalette[CYAN_WINDOW_PALETTE_OFF + window_frame_active] = 0x%02x;\n", palette[CYAN_WINDOW_PALETTE_OFF + window_frame_active]);
-    fprintf(palette_load_c, "\tpalette[CYAN_WINDOW_PALETTE_OFF + window_frame_icon] = 0x%02x;\n", palette[CYAN_WINDOW_PALETTE_OFF + window_frame_icon]);
-    fprintf(palette_load_c, "\tpalette[CYAN_WINDOW_PALETTE_OFF + window_scroll_bar_page] = 0x%02x;\n", palette[CYAN_WINDOW_PALETTE_OFF + window_scroll_bar_page]);
-    fprintf(palette_load_c, "\tpalette[CYAN_WINDOW_PALETTE_OFF + window_scroll_bar_icon] = 0x%02x;\n", palette[CYAN_WINDOW_PALETTE_OFF + window_scroll_bar_icon]);
-    fprintf(palette_load_c, "\tpalette[CYAN_WINDOW_PALETTE_OFF + window_normal_text] = 0x%02x;\n", palette[CYAN_WINDOW_PALETTE_OFF + window_normal_text]);
+    fprintf(palette_load_c, entry_string(palette[CYAN_WINDOW_PALETTE_OFF + window_frame_passive]));
+    fprintf(palette_load_c, entry_string(palette[CYAN_WINDOW_PALETTE_OFF + window_frame_active]));
+    fprintf(palette_load_c, entry_string(palette[CYAN_WINDOW_PALETTE_OFF + window_frame_icon]));
+    fprintf(palette_load_c, entry_string(palette[CYAN_WINDOW_PALETTE_OFF + window_scroll_bar_page]));
+    fprintf(palette_load_c, entry_string(palette[CYAN_WINDOW_PALETTE_OFF + window_scroll_bar_icon]));
+    fprintf(palette_load_c, entry_string(palette[CYAN_WINDOW_PALETTE_OFF + window_normal_text]));
     fprintf(palette_load_c, "}\n\n");
     
 
     fprintf(palette_load_c, "void build_gray_window_palette(palette_entry_t *palette) {\n");
-    fprintf(palette_load_c, "\tpalette[GRAY_WINDOW_PALETTE_OFF + window_frame_passive] = 0x%02x;\n", palette[GRAY_WINDOW_PALETTE_OFF + window_frame_passive]);
-    fprintf(palette_load_c, "\tpalette[GRAY_WINDOW_PALETTE_OFF + window_frame_active] = 0x%02x;\n", palette[GRAY_WINDOW_PALETTE_OFF + window_frame_active]);
-    fprintf(palette_load_c, "\tpalette[GRAY_WINDOW_PALETTE_OFF + window_frame_icon] = 0x%02x;\n", palette[GRAY_WINDOW_PALETTE_OFF + window_frame_icon]);
-    fprintf(palette_load_c, "\tpalette[GRAY_WINDOW_PALETTE_OFF + window_scroll_bar_page] = 0x%02x;\n", palette[GRAY_WINDOW_PALETTE_OFF + window_scroll_bar_page]);
-    fprintf(palette_load_c, "\tpalette[GRAY_WINDOW_PALETTE_OFF + window_scroll_bar_icon] = 0x%02x;\n", palette[GRAY_WINDOW_PALETTE_OFF + window_scroll_bar_icon]);
-    fprintf(palette_load_c, "\tpalette[GRAY_WINDOW_PALETTE_OFF + window_normal_text] = 0x%02x;\n", palette[GRAY_WINDOW_PALETTE_OFF + window_normal_text]);
+    fprintf(palette_load_c, entry_string(palette[GRAY_WINDOW_PALETTE_OFF + window_frame_passive]));
+    fprintf(palette_load_c, entry_string(palette[GRAY_WINDOW_PALETTE_OFF + window_frame_active]));
+    fprintf(palette_load_c, entry_string(palette[GRAY_WINDOW_PALETTE_OFF + window_frame_icon]));
+    fprintf(palette_load_c, entry_string(palette[GRAY_WINDOW_PALETTE_OFF + window_scroll_bar_page]));
+    fprintf(palette_load_c, entry_string(palette[GRAY_WINDOW_PALETTE_OFF + window_scroll_bar_icon]));
+    fprintf(palette_load_c, entry_string(palette[GRAY_WINDOW_PALETTE_OFF + window_normal_text]));
     fprintf(palette_load_c, "}\n\n");
 
 
     fprintf(palette_load_c, "void build_blue_dialog_palette(palette_entry_t *palette) {\n");
-    fprintf(palette_load_c, "\tpalette[BLUE_DIALOG_PALETTE_OFF + dialog_frame_background] = 0x%02x;\n", palette[BLUE_DIALOG_PALETTE_OFF + dialog_frame_background]);
-    fprintf(palette_load_c, "\tpalette[BLUE_DIALOG_PALETTE_OFF + dialog_frame_icon] = 0x%02x;\n", palette[BLUE_DIALOG_PALETTE_OFF + dialog_frame_icon]);
-    fprintf(palette_load_c, "\tpalette[BLUE_DIALOG_PALETTE_OFF + dialog_scroll_bar_page] = 0x%02x;\n", palette[BLUE_DIALOG_PALETTE_OFF + dialog_scroll_bar_page]);
-    fprintf(palette_load_c, "\tpalette[BLUE_DIALOG_PALETTE_OFF + dialog_scroll_bar_icons] = 0x%02x;\n", palette[BLUE_DIALOG_PALETTE_OFF + dialog_scroll_bar_icons]);
-    fprintf(palette_load_c, "\tpalette[BLUE_DIALOG_PALETTE_OFF + dialog_static_text] = 0x%02x;\n", palette[BLUE_DIALOG_PALETTE_OFF + dialog_static_text]);
+    fprintf(palette_load_c, entry_string(palette[BLUE_DIALOG_PALETTE_OFF + dialog_frame_background]));
+    fprintf(palette_load_c, entry_string(palette[BLUE_DIALOG_PALETTE_OFF + dialog_frame_icon]));
+    fprintf(palette_load_c, entry_string(palette[BLUE_DIALOG_PALETTE_OFF + dialog_scroll_bar_page]));
+    fprintf(palette_load_c, entry_string(palette[BLUE_DIALOG_PALETTE_OFF + dialog_scroll_bar_icons]));
+    fprintf(palette_load_c, entry_string(palette[BLUE_DIALOG_PALETTE_OFF + dialog_static_text]));
 
-    fprintf(palette_load_c, "\tpalette[BLUE_DIALOG_PALETTE_OFF + dialog_normal_label] = 0x%02x;\n", palette[BLUE_DIALOG_PALETTE_OFF + dialog_normal_label]);
-    fprintf(palette_load_c, "\tpalette[BLUE_DIALOG_PALETTE_OFF + dialog_selected_label] = 0x%02x;\n", palette[BLUE_DIALOG_PALETTE_OFF + dialog_selected_label]);
-    fprintf(palette_load_c, "\tpalette[BLUE_DIALOG_PALETTE_OFF + dialog_shortcut_label] = 0x%02x;\n", palette[BLUE_DIALOG_PALETTE_OFF + dialog_shortcut_label]);
+    fprintf(palette_load_c, entry_string(palette[BLUE_DIALOG_PALETTE_OFF + dialog_normal_label]));
+    fprintf(palette_load_c, entry_string(palette[BLUE_DIALOG_PALETTE_OFF + dialog_selected_label]));
+    fprintf(palette_load_c, entry_string(palette[BLUE_DIALOG_PALETTE_OFF + dialog_shortcut_label]));
 
-    fprintf(palette_load_c, "\tpalette[BLUE_DIALOG_PALETTE_OFF + dialog_normal_button] = 0x%02x;\n", palette[BLUE_DIALOG_PALETTE_OFF + dialog_normal_button]);
-    fprintf(palette_load_c, "\tpalette[BLUE_DIALOG_PALETTE_OFF + dialog_default_button] = 0x%02x;\n", palette[BLUE_DIALOG_PALETTE_OFF + dialog_default_button]);
-    fprintf(palette_load_c, "\tpalette[BLUE_DIALOG_PALETTE_OFF + dialog_selected_button] = 0x%02x;\n", palette[BLUE_DIALOG_PALETTE_OFF + dialog_selected_button]);
-    fprintf(palette_load_c, "\tpalette[BLUE_DIALOG_PALETTE_OFF + dialog_disabled_button] = 0x%02x;\n", palette[BLUE_DIALOG_PALETTE_OFF + dialog_disabled_button]);
-    fprintf(palette_load_c, "\tpalette[BLUE_DIALOG_PALETTE_OFF + dialog_shortcut_button] = 0x%02x;\n", palette[BLUE_DIALOG_PALETTE_OFF + dialog_shortcut_button]);
-    fprintf(palette_load_c, "\tpalette[BLUE_DIALOG_PALETTE_OFF + dialog_button_shadow] = 0x%02x;\n", palette[BLUE_DIALOG_PALETTE_OFF + dialog_button_shadow]);
+    fprintf(palette_load_c, entry_string(palette[BLUE_DIALOG_PALETTE_OFF + dialog_normal_button]));
+    fprintf(palette_load_c, entry_string(palette[BLUE_DIALOG_PALETTE_OFF + dialog_default_button]));
+    fprintf(palette_load_c, entry_string(palette[BLUE_DIALOG_PALETTE_OFF + dialog_selected_button]));
+    fprintf(palette_load_c, entry_string(palette[BLUE_DIALOG_PALETTE_OFF + dialog_disabled_button]));
+    fprintf(palette_load_c, entry_string(palette[BLUE_DIALOG_PALETTE_OFF + dialog_shortcut_button]));
+    fprintf(palette_load_c, entry_string(palette[BLUE_DIALOG_PALETTE_OFF + dialog_button_shadow]));
 
-    fprintf(palette_load_c, "\tpalette[BLUE_DIALOG_PALETTE_OFF + dialog_normal_cluster] = 0x%02x;\n", palette[BLUE_DIALOG_PALETTE_OFF + dialog_normal_cluster]);
-    fprintf(palette_load_c, "\tpalette[BLUE_DIALOG_PALETTE_OFF + dialog_selected_cluster] = 0x%02x;\n", palette[BLUE_DIALOG_PALETTE_OFF + dialog_selected_cluster]);
-    fprintf(palette_load_c, "\tpalette[BLUE_DIALOG_PALETTE_OFF + dialog_shortcut_cluster] = 0x%02x;\n", palette[BLUE_DIALOG_PALETTE_OFF + dialog_shortcut_cluster]);
+    fprintf(palette_load_c, entry_string(palette[BLUE_DIALOG_PALETTE_OFF + dialog_normal_cluster]));
+    fprintf(palette_load_c, entry_string(palette[BLUE_DIALOG_PALETTE_OFF + dialog_selected_cluster]));
+    fprintf(palette_load_c, entry_string(palette[BLUE_DIALOG_PALETTE_OFF + dialog_shortcut_cluster]));
 
-    fprintf(palette_load_c, "\tpalette[BLUE_DIALOG_PALETTE_OFF + dialog_normal_input] = 0x%02x;\n", palette[BLUE_DIALOG_PALETTE_OFF + dialog_normal_input]);
-    fprintf(palette_load_c, "\tpalette[BLUE_DIALOG_PALETTE_OFF + dialog_selected_input] = 0x%02x;\n", palette[BLUE_DIALOG_PALETTE_OFF + dialog_selected_input]);
-    fprintf(palette_load_c, "\tpalette[BLUE_DIALOG_PALETTE_OFF + dialog_input_arrow] = 0x%02x;\n", palette[BLUE_DIALOG_PALETTE_OFF + dialog_input_arrow]);
+    fprintf(palette_load_c, entry_string(palette[BLUE_DIALOG_PALETTE_OFF + dialog_normal_input]));
+    fprintf(palette_load_c, entry_string(palette[BLUE_DIALOG_PALETTE_OFF + dialog_selected_input]));
+    fprintf(palette_load_c, entry_string(palette[BLUE_DIALOG_PALETTE_OFF + dialog_input_arrow]));
 
-    fprintf(palette_load_c, "\tpalette[BLUE_DIALOG_PALETTE_OFF + dialog_history_button] = 0x%02x;\n", palette[BLUE_DIALOG_PALETTE_OFF + dialog_history_button]);
-    fprintf(palette_load_c, "\tpalette[BLUE_DIALOG_PALETTE_OFF + dialog_history_sides] = 0x%02x;\n", palette[BLUE_DIALOG_PALETTE_OFF + dialog_history_sides]);
-    fprintf(palette_load_c, "\tpalette[BLUE_DIALOG_PALETTE_OFF + dialog_history_barpage] = 0x%02x;\n", palette[BLUE_DIALOG_PALETTE_OFF + dialog_history_barpage]);
-    fprintf(palette_load_c, "\tpalette[BLUE_DIALOG_PALETTE_OFF + dialog_history_bar_icon] = 0x%02x;\n", palette[BLUE_DIALOG_PALETTE_OFF + dialog_history_bar_icon]);
+    fprintf(palette_load_c, entry_string(palette[BLUE_DIALOG_PALETTE_OFF + dialog_history_button]));
+    fprintf(palette_load_c, entry_string(palette[BLUE_DIALOG_PALETTE_OFF + dialog_history_sides]));
+    fprintf(palette_load_c, entry_string(palette[BLUE_DIALOG_PALETTE_OFF + dialog_history_barpage]));
+    fprintf(palette_load_c, entry_string(palette[BLUE_DIALOG_PALETTE_OFF + dialog_history_bar_icon]));
 
-    fprintf(palette_load_c, "\tpalette[BLUE_DIALOG_PALETTE_OFF + dialog_normal_list] = 0x%02x;\n", palette[BLUE_DIALOG_PALETTE_OFF + dialog_normal_list]);
-    fprintf(palette_load_c, "\tpalette[BLUE_DIALOG_PALETTE_OFF + dialog_selected_list] = 0x%02x;\n", palette[BLUE_DIALOG_PALETTE_OFF + dialog_selected_list]);
-    fprintf(palette_load_c, "\tpalette[BLUE_DIALOG_PALETTE_OFF + dialog_focused_list] = 0x%02x;\n", palette[BLUE_DIALOG_PALETTE_OFF + dialog_focused_list]);
-    fprintf(palette_load_c, "\tpalette[BLUE_DIALOG_PALETTE_OFF + dialog_list_divider] = 0x%02x;\n", palette[BLUE_DIALOG_PALETTE_OFF + dialog_list_divider]);
+    fprintf(palette_load_c, entry_string(palette[BLUE_DIALOG_PALETTE_OFF + dialog_normal_list]));
+    fprintf(palette_load_c, entry_string(palette[BLUE_DIALOG_PALETTE_OFF + dialog_selected_list]));
+    fprintf(palette_load_c, entry_string(palette[BLUE_DIALOG_PALETTE_OFF + dialog_focused_list]));
+    fprintf(palette_load_c, entry_string(palette[BLUE_DIALOG_PALETTE_OFF + dialog_list_divider]));
 
-    fprintf(palette_load_c, "\tpalette[BLUE_DIALOG_PALETTE_OFF + dialog_info_pane] = 0x%02x;\n", palette[BLUE_DIALOG_PALETTE_OFF + dialog_info_pane]);
-    fprintf(palette_load_c, "\tpalette[BLUE_DIALOG_PALETTE_OFF + dialog_disabled_cluster] = 0x%02x;\n", palette[BLUE_DIALOG_PALETTE_OFF + dialog_disabled_cluster]);
+    fprintf(palette_load_c, entry_string(palette[BLUE_DIALOG_PALETTE_OFF + dialog_info_pane]));
+    fprintf(palette_load_c, entry_string(palette[BLUE_DIALOG_PALETTE_OFF + dialog_disabled_cluster]));
     fprintf(palette_load_c, "}\n\n");
     
 
     fprintf(palette_load_c, "void build_cyan_dialog_palette(palette_entry_t *palette) {\n");
-    fprintf(palette_load_c, "\tpalette[CYAN_DIALOG_PALETTE_OFF + dialog_frame_background] = 0x%02x;\n", palette[CYAN_DIALOG_PALETTE_OFF + dialog_frame_background]);
-    fprintf(palette_load_c, "\tpalette[CYAN_DIALOG_PALETTE_OFF + dialog_frame_icon] = 0x%02x;\n", palette[CYAN_DIALOG_PALETTE_OFF + dialog_frame_icon]);
-    fprintf(palette_load_c, "\tpalette[CYAN_DIALOG_PALETTE_OFF + dialog_scroll_bar_page] = 0x%02x;\n", palette[CYAN_DIALOG_PALETTE_OFF + dialog_scroll_bar_page]);
-    fprintf(palette_load_c, "\tpalette[CYAN_DIALOG_PALETTE_OFF + dialog_scroll_bar_icons] = 0x%02x;\n", palette[CYAN_DIALOG_PALETTE_OFF + dialog_scroll_bar_icons]);
-    fprintf(palette_load_c, "\tpalette[CYAN_DIALOG_PALETTE_OFF + dialog_static_text] = 0x%02x;\n", palette[CYAN_DIALOG_PALETTE_OFF + dialog_static_text]);
+    fprintf(palette_load_c, entry_string(palette[CYAN_DIALOG_PALETTE_OFF + dialog_frame_background]));
+    fprintf(palette_load_c, entry_string(palette[CYAN_DIALOG_PALETTE_OFF + dialog_frame_icon]));
+    fprintf(palette_load_c, entry_string(palette[CYAN_DIALOG_PALETTE_OFF + dialog_scroll_bar_page]));
+    fprintf(palette_load_c, entry_string(palette[CYAN_DIALOG_PALETTE_OFF + dialog_scroll_bar_icons]));
+    fprintf(palette_load_c, entry_string(palette[CYAN_DIALOG_PALETTE_OFF + dialog_static_text]));
 
-    fprintf(palette_load_c, "\tpalette[CYAN_DIALOG_PALETTE_OFF + dialog_normal_label] = 0x%02x;\n", palette[CYAN_DIALOG_PALETTE_OFF + dialog_normal_label]);
-    fprintf(palette_load_c, "\tpalette[CYAN_DIALOG_PALETTE_OFF + dialog_selected_label] = 0x%02x;\n", palette[CYAN_DIALOG_PALETTE_OFF + dialog_selected_label]);
-    fprintf(palette_load_c, "\tpalette[CYAN_DIALOG_PALETTE_OFF + dialog_shortcut_label] = 0x%02x;\n", palette[CYAN_DIALOG_PALETTE_OFF + dialog_shortcut_label]);
+    fprintf(palette_load_c, entry_string(palette[CYAN_DIALOG_PALETTE_OFF + dialog_normal_label]));
+    fprintf(palette_load_c, entry_string(palette[CYAN_DIALOG_PALETTE_OFF + dialog_selected_label]));
+    fprintf(palette_load_c, entry_string(palette[CYAN_DIALOG_PALETTE_OFF + dialog_shortcut_label]));
 
-    fprintf(palette_load_c, "\tpalette[CYAN_DIALOG_PALETTE_OFF + dialog_normal_button] = 0x%02x;\n", palette[CYAN_DIALOG_PALETTE_OFF + dialog_normal_button]);
-    fprintf(palette_load_c, "\tpalette[CYAN_DIALOG_PALETTE_OFF + dialog_default_button] = 0x%02x;\n", palette[CYAN_DIALOG_PALETTE_OFF + dialog_default_button]);
-    fprintf(palette_load_c, "\tpalette[CYAN_DIALOG_PALETTE_OFF + dialog_selected_button] = 0x%02x;\n", palette[CYAN_DIALOG_PALETTE_OFF + dialog_selected_button]);
-    fprintf(palette_load_c, "\tpalette[CYAN_DIALOG_PALETTE_OFF + dialog_disabled_button] = 0x%02x;\n", palette[CYAN_DIALOG_PALETTE_OFF + dialog_disabled_button]);
-    fprintf(palette_load_c, "\tpalette[CYAN_DIALOG_PALETTE_OFF + dialog_shortcut_button] = 0x%02x;\n", palette[CYAN_DIALOG_PALETTE_OFF + dialog_shortcut_button]);
-    fprintf(palette_load_c, "\tpalette[CYAN_DIALOG_PALETTE_OFF + dialog_button_shadow] = 0x%02x;\n", palette[CYAN_DIALOG_PALETTE_OFF + dialog_button_shadow]);
+    fprintf(palette_load_c, entry_string(palette[CYAN_DIALOG_PALETTE_OFF + dialog_normal_button]));
+    fprintf(palette_load_c, entry_string(palette[CYAN_DIALOG_PALETTE_OFF + dialog_default_button]));
+    fprintf(palette_load_c, entry_string(palette[CYAN_DIALOG_PALETTE_OFF + dialog_selected_button]));
+    fprintf(palette_load_c, entry_string(palette[CYAN_DIALOG_PALETTE_OFF + dialog_disabled_button]));
+    fprintf(palette_load_c, entry_string(palette[CYAN_DIALOG_PALETTE_OFF + dialog_shortcut_button]));
+    fprintf(palette_load_c, entry_string(palette[CYAN_DIALOG_PALETTE_OFF + dialog_button_shadow]));
 
-    fprintf(palette_load_c, "\tpalette[CYAN_DIALOG_PALETTE_OFF + dialog_normal_cluster] = 0x%02x;\n", palette[CYAN_DIALOG_PALETTE_OFF + dialog_normal_cluster]);
-    fprintf(palette_load_c, "\tpalette[CYAN_DIALOG_PALETTE_OFF + dialog_selected_cluster] = 0x%02x;\n", palette[CYAN_DIALOG_PALETTE_OFF + dialog_selected_cluster]);
-    fprintf(palette_load_c, "\tpalette[CYAN_DIALOG_PALETTE_OFF + dialog_shortcut_cluster] = 0x%02x;\n", palette[CYAN_DIALOG_PALETTE_OFF + dialog_shortcut_cluster]);
+    fprintf(palette_load_c, entry_string(palette[CYAN_DIALOG_PALETTE_OFF + dialog_normal_cluster]));
+    fprintf(palette_load_c, entry_string(palette[CYAN_DIALOG_PALETTE_OFF + dialog_selected_cluster]));
+    fprintf(palette_load_c, entry_string(palette[CYAN_DIALOG_PALETTE_OFF + dialog_shortcut_cluster]));
 
-    fprintf(palette_load_c, "\tpalette[CYAN_DIALOG_PALETTE_OFF + dialog_normal_input] = 0x%02x;\n", palette[CYAN_DIALOG_PALETTE_OFF + dialog_normal_input]);
-    fprintf(palette_load_c, "\tpalette[CYAN_DIALOG_PALETTE_OFF + dialog_selected_input] = 0x%02x;\n", palette[CYAN_DIALOG_PALETTE_OFF + dialog_selected_input]);
-    fprintf(palette_load_c, "\tpalette[CYAN_DIALOG_PALETTE_OFF + dialog_input_arrow] = 0x%02x;\n", palette[CYAN_DIALOG_PALETTE_OFF + dialog_input_arrow]);
+    fprintf(palette_load_c, entry_string(palette[CYAN_DIALOG_PALETTE_OFF + dialog_normal_input]));
+    fprintf(palette_load_c, entry_string(palette[CYAN_DIALOG_PALETTE_OFF + dialog_selected_input]));
+    fprintf(palette_load_c, entry_string(palette[CYAN_DIALOG_PALETTE_OFF + dialog_input_arrow]));
 
-    fprintf(palette_load_c, "\tpalette[CYAN_DIALOG_PALETTE_OFF + dialog_history_button] = 0x%02x;\n", palette[CYAN_DIALOG_PALETTE_OFF + dialog_history_button]);
-    fprintf(palette_load_c, "\tpalette[CYAN_DIALOG_PALETTE_OFF + dialog_history_sides] = 0x%02x;\n", palette[CYAN_DIALOG_PALETTE_OFF + dialog_history_sides]);
-    fprintf(palette_load_c, "\tpalette[CYAN_DIALOG_PALETTE_OFF + dialog_history_barpage] = 0x%02x;\n", palette[CYAN_DIALOG_PALETTE_OFF + dialog_history_barpage]);
-    fprintf(palette_load_c, "\tpalette[CYAN_DIALOG_PALETTE_OFF + dialog_history_bar_icon] = 0x%02x;\n", palette[CYAN_DIALOG_PALETTE_OFF + dialog_history_bar_icon]);
+    fprintf(palette_load_c, entry_string(palette[CYAN_DIALOG_PALETTE_OFF + dialog_history_button]));
+    fprintf(palette_load_c, entry_string(palette[CYAN_DIALOG_PALETTE_OFF + dialog_history_sides]));
+    fprintf(palette_load_c, entry_string(palette[CYAN_DIALOG_PALETTE_OFF + dialog_history_barpage]));
+    fprintf(palette_load_c, entry_string(palette[CYAN_DIALOG_PALETTE_OFF + dialog_history_bar_icon]));
 
-    fprintf(palette_load_c, "\tpalette[CYAN_DIALOG_PALETTE_OFF + dialog_normal_list] = 0x%02x;\n", palette[CYAN_DIALOG_PALETTE_OFF + dialog_normal_list]);
-    fprintf(palette_load_c, "\tpalette[CYAN_DIALOG_PALETTE_OFF + dialog_selected_list] = 0x%02x;\n", palette[CYAN_DIALOG_PALETTE_OFF + dialog_selected_list]);
-    fprintf(palette_load_c, "\tpalette[CYAN_DIALOG_PALETTE_OFF + dialog_focused_list] = 0x%02x;\n", palette[CYAN_DIALOG_PALETTE_OFF + dialog_focused_list]);
-    fprintf(palette_load_c, "\tpalette[CYAN_DIALOG_PALETTE_OFF + dialog_list_divider] = 0x%02x;\n", palette[CYAN_DIALOG_PALETTE_OFF + dialog_list_divider]);
+    fprintf(palette_load_c, entry_string(palette[CYAN_DIALOG_PALETTE_OFF + dialog_normal_list]));
+    fprintf(palette_load_c, entry_string(palette[CYAN_DIALOG_PALETTE_OFF + dialog_selected_list]));
+    fprintf(palette_load_c, entry_string(palette[CYAN_DIALOG_PALETTE_OFF + dialog_focused_list]));
+    fprintf(palette_load_c, entry_string(palette[CYAN_DIALOG_PALETTE_OFF + dialog_list_divider]));
 
-    fprintf(palette_load_c, "\tpalette[CYAN_DIALOG_PALETTE_OFF + dialog_info_pane] = 0x%02x;\n", palette[CYAN_DIALOG_PALETTE_OFF + dialog_info_pane]);
-    fprintf(palette_load_c, "\tpalette[CYAN_DIALOG_PALETTE_OFF + dialog_disabled_cluster] = 0x%02x;\n", palette[CYAN_DIALOG_PALETTE_OFF + dialog_disabled_cluster]);
+    fprintf(palette_load_c, entry_string(palette[CYAN_DIALOG_PALETTE_OFF + dialog_info_pane]));
+    fprintf(palette_load_c, entry_string(palette[CYAN_DIALOG_PALETTE_OFF + dialog_disabled_cluster]));
     fprintf(palette_load_c, "}\n\n");
 
 
     fprintf(palette_load_c, "void build_gray_dialog_palette(palette_entry_t *palette) {\n");
-    fprintf(palette_load_c, "\tpalette[GRAY_DIALOG_PALETTE_OFF + dialog_frame_background] = 0x%02x;\n", palette[GRAY_DIALOG_PALETTE_OFF + dialog_frame_background]);
-    fprintf(palette_load_c, "\tpalette[GRAY_DIALOG_PALETTE_OFF + dialog_frame_icon] = 0x%02x;\n", palette[GRAY_DIALOG_PALETTE_OFF + dialog_frame_icon]);
-    fprintf(palette_load_c, "\tpalette[GRAY_DIALOG_PALETTE_OFF + dialog_scroll_bar_page] = 0x%02x;\n", palette[GRAY_DIALOG_PALETTE_OFF + dialog_scroll_bar_page]);
-    fprintf(palette_load_c, "\tpalette[GRAY_DIALOG_PALETTE_OFF + dialog_scroll_bar_icons] = 0x%02x;\n", palette[GRAY_DIALOG_PALETTE_OFF + dialog_scroll_bar_icons]);
-    fprintf(palette_load_c, "\tpalette[GRAY_DIALOG_PALETTE_OFF + dialog_static_text] = 0x%02x;\n", palette[GRAY_DIALOG_PALETTE_OFF + dialog_static_text]);
+    fprintf(palette_load_c, entry_string(palette[GRAY_DIALOG_PALETTE_OFF + dialog_frame_background]));
+    fprintf(palette_load_c, entry_string(palette[GRAY_DIALOG_PALETTE_OFF + dialog_frame_icon]));
+    fprintf(palette_load_c, entry_string(palette[GRAY_DIALOG_PALETTE_OFF + dialog_scroll_bar_page]));
+    fprintf(palette_load_c, entry_string(palette[GRAY_DIALOG_PALETTE_OFF + dialog_scroll_bar_icons]));
+    fprintf(palette_load_c, entry_string(palette[GRAY_DIALOG_PALETTE_OFF + dialog_static_text]));
 
-    fprintf(palette_load_c, "\tpalette[GRAY_DIALOG_PALETTE_OFF + dialog_normal_label] = 0x%02x;\n", palette[GRAY_DIALOG_PALETTE_OFF + dialog_normal_label]);
-    fprintf(palette_load_c, "\tpalette[GRAY_DIALOG_PALETTE_OFF + dialog_selected_label] = 0x%02x;\n", palette[GRAY_DIALOG_PALETTE_OFF + dialog_selected_label]);
-    fprintf(palette_load_c, "\tpalette[GRAY_DIALOG_PALETTE_OFF + dialog_shortcut_label] = 0x%02x;\n", palette[GRAY_DIALOG_PALETTE_OFF + dialog_shortcut_label]);
+    fprintf(palette_load_c, entry_string(palette[GRAY_DIALOG_PALETTE_OFF + dialog_normal_label]));
+    fprintf(palette_load_c, entry_string(palette[GRAY_DIALOG_PALETTE_OFF + dialog_selected_label]));
+    fprintf(palette_load_c, entry_string(palette[GRAY_DIALOG_PALETTE_OFF + dialog_shortcut_label]));
 
-    fprintf(palette_load_c, "\tpalette[GRAY_DIALOG_PALETTE_OFF + dialog_normal_button] = 0x%02x;\n", palette[GRAY_DIALOG_PALETTE_OFF + dialog_normal_button]);
-    fprintf(palette_load_c, "\tpalette[GRAY_DIALOG_PALETTE_OFF + dialog_default_button] = 0x%02x;\n", palette[GRAY_DIALOG_PALETTE_OFF + dialog_default_button]);
-    fprintf(palette_load_c, "\tpalette[GRAY_DIALOG_PALETTE_OFF + dialog_selected_button] = 0x%02x;\n", palette[GRAY_DIALOG_PALETTE_OFF + dialog_selected_button]);
-    fprintf(palette_load_c, "\tpalette[GRAY_DIALOG_PALETTE_OFF + dialog_disabled_button] = 0x%02x;\n", palette[GRAY_DIALOG_PALETTE_OFF + dialog_disabled_button]);
-    fprintf(palette_load_c, "\tpalette[GRAY_DIALOG_PALETTE_OFF + dialog_shortcut_button] = 0x%02x;\n", palette[GRAY_DIALOG_PALETTE_OFF + dialog_shortcut_button]);
-    fprintf(palette_load_c, "\tpalette[GRAY_DIALOG_PALETTE_OFF + dialog_button_shadow] = 0x%02x;\n", palette[GRAY_DIALOG_PALETTE_OFF + dialog_button_shadow]);
+    fprintf(palette_load_c, entry_string(palette[GRAY_DIALOG_PALETTE_OFF + dialog_normal_button]));
+    fprintf(palette_load_c, entry_string(palette[GRAY_DIALOG_PALETTE_OFF + dialog_default_button]));
+    fprintf(palette_load_c, entry_string(palette[GRAY_DIALOG_PALETTE_OFF + dialog_selected_button]));
+    fprintf(palette_load_c, entry_string(palette[GRAY_DIALOG_PALETTE_OFF + dialog_disabled_button]));
+    fprintf(palette_load_c, entry_string(palette[GRAY_DIALOG_PALETTE_OFF + dialog_shortcut_button]));
+    fprintf(palette_load_c, entry_string(palette[GRAY_DIALOG_PALETTE_OFF + dialog_button_shadow]));
 
-    fprintf(palette_load_c, "\tpalette[GRAY_DIALOG_PALETTE_OFF + dialog_normal_cluster] = 0x%02x;\n", palette[GRAY_DIALOG_PALETTE_OFF + dialog_normal_cluster]);
-    fprintf(palette_load_c, "\tpalette[GRAY_DIALOG_PALETTE_OFF + dialog_selected_cluster] = 0x%02x;\n", palette[GRAY_DIALOG_PALETTE_OFF + dialog_selected_cluster]);
-    fprintf(palette_load_c, "\tpalette[GRAY_DIALOG_PALETTE_OFF + dialog_shortcut_cluster] = 0x%02x;\n", palette[GRAY_DIALOG_PALETTE_OFF + dialog_shortcut_cluster]);
+    fprintf(palette_load_c, entry_string(palette[GRAY_DIALOG_PALETTE_OFF + dialog_normal_cluster]));
+    fprintf(palette_load_c, entry_string(palette[GRAY_DIALOG_PALETTE_OFF + dialog_selected_cluster]));
+    fprintf(palette_load_c, entry_string(palette[GRAY_DIALOG_PALETTE_OFF + dialog_shortcut_cluster]));
 
-    fprintf(palette_load_c, "\tpalette[GRAY_DIALOG_PALETTE_OFF + dialog_normal_input] = 0x%02x;\n", palette[GRAY_DIALOG_PALETTE_OFF + dialog_normal_input]);
-    fprintf(palette_load_c, "\tpalette[GRAY_DIALOG_PALETTE_OFF + dialog_selected_input] = 0x%02x;\n", palette[GRAY_DIALOG_PALETTE_OFF + dialog_selected_input]);
-    fprintf(palette_load_c, "\tpalette[GRAY_DIALOG_PALETTE_OFF + dialog_input_arrow] = 0x%02x;\n", palette[GRAY_DIALOG_PALETTE_OFF + dialog_input_arrow]);
+    fprintf(palette_load_c, entry_string(palette[GRAY_DIALOG_PALETTE_OFF + dialog_normal_input]));
+    fprintf(palette_load_c, entry_string(palette[GRAY_DIALOG_PALETTE_OFF + dialog_selected_input]));
+    fprintf(palette_load_c, entry_string(palette[GRAY_DIALOG_PALETTE_OFF + dialog_input_arrow]));
 
-    fprintf(palette_load_c, "\tpalette[GRAY_DIALOG_PALETTE_OFF + dialog_history_button] = 0x%02x;\n", palette[GRAY_DIALOG_PALETTE_OFF + dialog_history_button]);
-    fprintf(palette_load_c, "\tpalette[GRAY_DIALOG_PALETTE_OFF + dialog_history_sides] = 0x%02x;\n", palette[GRAY_DIALOG_PALETTE_OFF + dialog_history_sides]);
-    fprintf(palette_load_c, "\tpalette[GRAY_DIALOG_PALETTE_OFF + dialog_history_barpage] = 0x%02x;\n", palette[GRAY_DIALOG_PALETTE_OFF + dialog_history_barpage]);
-    fprintf(palette_load_c, "\tpalette[GRAY_DIALOG_PALETTE_OFF + dialog_history_bar_icon] = 0x%02x;\n", palette[GRAY_DIALOG_PALETTE_OFF + dialog_history_bar_icon]);
+    fprintf(palette_load_c, entry_string(palette[GRAY_DIALOG_PALETTE_OFF + dialog_history_button]));
+    fprintf(palette_load_c, entry_string(palette[GRAY_DIALOG_PALETTE_OFF + dialog_history_sides]));
+    fprintf(palette_load_c, entry_string(palette[GRAY_DIALOG_PALETTE_OFF + dialog_history_barpage]));
+    fprintf(palette_load_c, entry_string(palette[GRAY_DIALOG_PALETTE_OFF + dialog_history_bar_icon]));
 
-    fprintf(palette_load_c, "\tpalette[GRAY_DIALOG_PALETTE_OFF + dialog_normal_list] = 0x%02x;\n", palette[GRAY_DIALOG_PALETTE_OFF + dialog_normal_list]);
-    fprintf(palette_load_c, "\tpalette[GRAY_DIALOG_PALETTE_OFF + dialog_selected_list] = 0x%02x;\n", palette[GRAY_DIALOG_PALETTE_OFF + dialog_selected_list]);
-    fprintf(palette_load_c, "\tpalette[GRAY_DIALOG_PALETTE_OFF + dialog_focused_list] = 0x%02x;\n", palette[GRAY_DIALOG_PALETTE_OFF + dialog_focused_list]);
-    fprintf(palette_load_c, "\tpalette[GRAY_DIALOG_PALETTE_OFF + dialog_list_divider] = 0x%02x;\n", palette[GRAY_DIALOG_PALETTE_OFF + dialog_list_divider]);
+    fprintf(palette_load_c, entry_string(palette[GRAY_DIALOG_PALETTE_OFF + dialog_normal_list]));
+    fprintf(palette_load_c, entry_string(palette[GRAY_DIALOG_PALETTE_OFF + dialog_selected_list]));
+    fprintf(palette_load_c, entry_string(palette[GRAY_DIALOG_PALETTE_OFF + dialog_focused_list]));
+    fprintf(palette_load_c, entry_string(palette[GRAY_DIALOG_PALETTE_OFF + dialog_list_divider]));
 
-    fprintf(palette_load_c, "\tpalette[GRAY_DIALOG_PALETTE_OFF + dialog_info_pane] = 0x%02x;\n", palette[GRAY_DIALOG_PALETTE_OFF + dialog_info_pane]);
-    fprintf(palette_load_c, "\tpalette[GRAY_DIALOG_PALETTE_OFF + dialog_disabled_cluster] = 0x%02x;\n", palette[GRAY_DIALOG_PALETTE_OFF + dialog_disabled_cluster]);
+    fprintf(palette_load_c, entry_string(palette[GRAY_DIALOG_PALETTE_OFF + dialog_info_pane]));
+    fprintf(palette_load_c, entry_string(palette[GRAY_DIALOG_PALETTE_OFF + dialog_disabled_cluster]));
     fprintf(palette_load_c, "}\n\n");
 
 
     fprintf(palette_load_c, "void build_menu_palette(palette_entry_t *palette) {\n");
-    fprintf(palette_load_c, "\tpalette[menu_normal] = 0x%02x;\n", palette[menu_normal]);
-    fprintf(palette_load_c, "\tpalette[menu_disabled] = 0x%02x;\n", palette[menu_disabled]);
-    fprintf(palette_load_c, "\tpalette[menu_shortcut] = 0x%02x;\n", palette[menu_shortcut]);
-    fprintf(palette_load_c, "\tpalette[menu_selected] = 0x%02x;\n", palette[menu_selected]);
-    fprintf(palette_load_c, "\tpalette[menu_select_disabled] = 0x%02x;\n", palette[menu_select_disabled]);
-    fprintf(palette_load_c, "\tpalette[menu_shortcut_selected] = 0x%02x;\n", palette[menu_shortcut_selected]);
+    fprintf(palette_load_c, entry_string(palette[menu_normal]));
+    fprintf(palette_load_c, entry_string(palette[menu_disabled]));
+    fprintf(palette_load_c, entry_string(palette[menu_shortcut]));
+    fprintf(palette_load_c, entry_string(palette[menu_selected]));
+    fprintf(palette_load_c, entry_string(palette[menu_select_disabled]));
+    fprintf(palette_load_c, entry_string(palette[menu_shortcut_selected]));
     fprintf(palette_load_c, "}\n\n");
 
 
     fprintf(palette_load_c, "void build_desktop_palette(palette_entry_t *palette) {\n");
-    fprintf(palette_load_c, "\tpalette[desktop_color] = 0x%02x;\n", palette[desktop_color]);
+    fprintf(palette_load_c, entry_string(palette[desktop_color]));
     fprintf(palette_load_c, "}\n\n");
 
 
     fprintf(palette_load_c, "void build_browser_palette(palette_entry_t *palette) {\n");
-    fprintf(palette_load_c, "\tpalette[browser_frame_passive] = 0x%02x;\n", palette[browser_frame_passive]);
-    fprintf(palette_load_c, "\tpalette[browser_frame_active] = 0x%02x;\n", palette[browser_frame_active]);
-    fprintf(palette_load_c, "\tpalette[browser_frame_icon] = 0x%02x;\n", palette[browser_frame_icon]);
-    fprintf(palette_load_c, "\tpalette[browser_scroll_bar_page] = 0x%02x;\n", palette[browser_scroll_bar_page]);
-    fprintf(palette_load_c, "\tpalette[browser_scroll_bar_icons] = 0x%02x;\n", palette[browser_scroll_bar_icons]);
-    fprintf(palette_load_c, "\tpalette[browser_normal_text] = 0x%02x;\n", palette[browser_normal_text]);
-    fprintf(palette_load_c, "\tpalette[browser_selected_text] = 0x%02x;\n", palette[browser_selected_text]);
-    fprintf(palette_load_c, "\tpalette[browser_active_item] = 0x%02x;\n", palette[browser_active_item]);
-    fprintf(palette_load_c, "\tpalette[browser_inactive_item] = 0x%02x;\n", palette[browser_inactive_item]);
-    fprintf(palette_load_c, "\tpalette[browser_focused_item] = 0x%02x;\n", palette[browser_focused_item]);
-    fprintf(palette_load_c, "\tpalette[browser_selected_item] = 0x%02x;\n", palette[browser_selected_item]);
-    fprintf(palette_load_c, "\tpalette[browser_divider] = 0x%02x;\n", palette[browser_divider]);
+    fprintf(palette_load_c, entry_string(palette[browser_frame_passive]));
+    fprintf(palette_load_c, entry_string(palette[browser_frame_active]));
+    fprintf(palette_load_c, entry_string(palette[browser_frame_icon]));
+    fprintf(palette_load_c, entry_string(palette[browser_scroll_bar_page]));
+    fprintf(palette_load_c, entry_string(palette[browser_scroll_bar_icons]));
+    fprintf(palette_load_c, entry_string(palette[browser_normal_text]));
+    fprintf(palette_load_c, entry_string(palette[browser_selected_text]));
+    fprintf(palette_load_c, entry_string(palette[browser_active_item]));
+    fprintf(palette_load_c, entry_string(palette[browser_inactive_item]));
+    fprintf(palette_load_c, entry_string(palette[browser_focused_item]));
+    fprintf(palette_load_c, entry_string(palette[browser_selected_item]));
+    fprintf(palette_load_c, entry_string(palette[browser_divider]));
     fprintf(palette_load_c, "}\n\n");
 
 
     fprintf(palette_load_c, "void build_clock_palette(palette_entry_t *palette) {\n");
-    fprintf(palette_load_c, "\tpalette[clock_clockview] = 0x%02x;\n", palette[clock_clockview]);
+    fprintf(palette_load_c, entry_string(palette[clock_clockview]));
     fprintf(palette_load_c, "}\n\n");
 
 
     fprintf(palette_load_c, "void build_editor_palette(palette_entry_t *palette) {\n");
-    fprintf(palette_load_c, "\tpalette[editor_frame_passive] = 0x%02x;\n", palette[editor_frame_passive]);
-    fprintf(palette_load_c, "\tpalette[editor_frame_active] = 0x%02x;\n", palette[editor_frame_active]);
-    fprintf(palette_load_c, "\tpalette[editor_frame_icon] = 0x%02x;\n", palette[editor_frame_icon]);
-    fprintf(palette_load_c, "\tpalette[editor_scroll_bar_page] = 0x%02x;\n", palette[editor_scroll_bar_page]);
-    fprintf(palette_load_c, "\tpalette[editor_scroll_bar_icons] = 0x%02x;\n", palette[editor_scroll_bar_icons]);
-    fprintf(palette_load_c, "\tpalette[editor_normal_text] = 0x%02x;\n", palette[editor_normal_text]);
-    fprintf(palette_load_c, "\tpalette[editor_selected_text] = 0x%02x;\n", palette[editor_selected_text]);
-    fprintf(palette_load_c, "\tpalette[editor_highlight_column] = 0x%02x;\n", palette[editor_highlight_column]);
-    fprintf(palette_load_c, "\tpalette[editor_highlight_row] = 0x%02x;\n", palette[editor_highlight_row]);
-    fprintf(palette_load_c, "\tpalette[editor_error_messages] = 0x%02x;\n", palette[editor_error_messages]);
+    fprintf(palette_load_c, entry_string(palette[editor_frame_passive]));
+    fprintf(palette_load_c, entry_string(palette[editor_frame_active]));
+    fprintf(palette_load_c, entry_string(palette[editor_frame_icon]));
+    fprintf(palette_load_c, entry_string(palette[editor_scroll_bar_page]));
+    fprintf(palette_load_c, entry_string(palette[editor_scroll_bar_icons]));
+    fprintf(palette_load_c, entry_string(palette[editor_normal_text]));
+    fprintf(palette_load_c, entry_string(palette[editor_selected_text]));
+    fprintf(palette_load_c, entry_string(palette[editor_highlight_column]));
+    fprintf(palette_load_c, entry_string(palette[editor_highlight_row]));
+    fprintf(palette_load_c, entry_string(palette[editor_error_messages]));
     fprintf(palette_load_c, "}\n\n");
 
 
     fprintf(palette_load_c, "void build_help_palette(palette_entry_t *palette) {\n");
-    fprintf(palette_load_c, "\tpalette[help_frame_passive] = 0x%02x;\n", palette[help_frame_passive]);
-    fprintf(palette_load_c, "\tpalette[help_frame_active] = 0x%02x;\n", palette[help_frame_active]);
-    fprintf(palette_load_c, "\tpalette[help_frame_icon] = 0x%02x;\n", palette[help_frame_icon]);
-    fprintf(palette_load_c, "\tpalette[help_scroll_bar_page] = 0x%02x;\n", palette[help_scroll_bar_page]);
-    fprintf(palette_load_c, "\tpalette[help_scroll_bar_icons] = 0x%02x;\n", palette[help_scroll_bar_icons]);
-    fprintf(palette_load_c, "\tpalette[help_help_text] = 0x%02x;\n", palette[help_help_text]);
-    fprintf(palette_load_c, "\tpalette[help_help_links] = 0x%02x;\n", palette[help_help_links]);
-    fprintf(palette_load_c, "\tpalette[help_selected_link] = 0x%02x;\n", palette[help_selected_link]);
-    fprintf(palette_load_c, "\tpalette[help_selected_text] = 0x%02x;\n", palette[help_selected_text]);
-    fprintf(palette_load_c, "\tpalette[help_html_heading1] = 0x%02x;\n", palette[help_html_heading1]);
-    fprintf(palette_load_c, "\tpalette[help_html_heading2] = 0x%02x;\n", palette[help_html_heading2]);
-    fprintf(palette_load_c, "\tpalette[help_html_heading3] = 0x%02x;\n", palette[help_html_heading3]);
-    fprintf(palette_load_c, "\tpalette[help_html_heading4] = 0x%02x;\n", palette[help_html_heading4]);
-    fprintf(palette_load_c, "\tpalette[help_html_heading5] = 0x%02x;\n", palette[help_html_heading5]);
-    fprintf(palette_load_c, "\tpalette[help_html_heading6] = 0x%02x;\n", palette[help_html_heading6]);
+    fprintf(palette_load_c, entry_string(palette[help_frame_passive]));
+    fprintf(palette_load_c, entry_string(palette[help_frame_active]));
+    fprintf(palette_load_c, entry_string(palette[help_frame_icon]));
+    fprintf(palette_load_c, entry_string(palette[help_scroll_bar_page]));
+    fprintf(palette_load_c, entry_string(palette[help_scroll_bar_icons]));
+    fprintf(palette_load_c, entry_string(palette[help_help_text]));
+    fprintf(palette_load_c, entry_string(palette[help_help_links]));
+    fprintf(palette_load_c, entry_string(palette[help_selected_link]));
+    fprintf(palette_load_c, entry_string(palette[help_selected_text]));
+    fprintf(palette_load_c, entry_string(palette[help_html_heading1]));
+    fprintf(palette_load_c, entry_string(palette[help_html_heading2]));
+    fprintf(palette_load_c, entry_string(palette[help_html_heading3]));
+    fprintf(palette_load_c, entry_string(palette[help_html_heading4]));
+    fprintf(palette_load_c, entry_string(palette[help_html_heading5]));
+    fprintf(palette_load_c, entry_string(palette[help_html_heading6]));
     fprintf(palette_load_c, "}\n\n");
 
 
     fprintf(palette_load_c, "void build_syntax_palette(palette_entry_t *palette) {\n");
-    fprintf(palette_load_c, "\tpalette[syntax_whitespace] = 0x%02x;\n", palette[syntax_whitespace]);
-    fprintf(palette_load_c, "\tpalette[syntax_comments] = 0x%02x;\n", palette[syntax_comments]);
-    fprintf(palette_load_c, "\tpalette[syntax_reserved_words] = 0x%02x;\n", palette[syntax_reserved_words]);
-    fprintf(palette_load_c, "\tpalette[syntax_identifiers] = 0x%02x;\n", palette[syntax_identifiers]);
-    fprintf(palette_load_c, "\tpalette[syntax_strings] = 0x%02x;\n", palette[syntax_strings]);
-    fprintf(palette_load_c, "\tpalette[syntax_numbers] = 0x%02x;\n", palette[syntax_numbers]);
-    fprintf(palette_load_c, "\tpalette[syntax_hex_numbers] = 0x%02x;\n", palette[syntax_hex_numbers]);
-    fprintf(palette_load_c, "\tpalette[syntax_assembler] = 0x%02x;\n", palette[syntax_assembler]);
-    fprintf(palette_load_c, "\tpalette[syntax_symbols] = 0x%02x;\n", palette[syntax_symbols]);
-    fprintf(palette_load_c, "\tpalette[syntax_directives] = 0x%02x;\n", palette[syntax_directives]);
-    fprintf(palette_load_c, "\tpalette[syntax_tabs] = 0x%02x;\n", palette[syntax_tabs]);
+    fprintf(palette_load_c, entry_string(palette[syntax_whitespace]));
+    fprintf(palette_load_c, entry_string(palette[syntax_comments]));
+    fprintf(palette_load_c, entry_string(palette[syntax_reserved_words]));
+    fprintf(palette_load_c, entry_string(palette[syntax_identifiers]));
+    fprintf(palette_load_c, entry_string(palette[syntax_strings]));
+    fprintf(palette_load_c, entry_string(palette[syntax_numbers]));
+    fprintf(palette_load_c, entry_string(palette[syntax_hex_numbers]));
+    fprintf(palette_load_c, entry_string(palette[syntax_assembler]));
+    fprintf(palette_load_c, entry_string(palette[syntax_symbols]));
+    fprintf(palette_load_c, entry_string(palette[syntax_directives]));
+    fprintf(palette_load_c, entry_string(palette[syntax_tabs]));
     fprintf(palette_load_c, "}\n");
 
     fclose(palette_load_c);
