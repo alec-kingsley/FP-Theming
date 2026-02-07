@@ -33,6 +33,8 @@ each enum has a name taken from the FPC source code.
 
 The `themes/` folder contains some pre-made themes.
 
+`default.fp.ini` is the default theme for FP
+
 `bunnyworks.fp.ini` comes from [here](https://mooncore.eu/bunny/txt/fpidecol.htm)
 
 `cyberfilth.fp.ini` comes from [here](https://github.com/cyberfilth/FP-IDE-theme/tree/main)
@@ -59,3 +61,4 @@ Function to read palette: [strtopalette](https://gitlab.com/freepascal.org/fpc/s
 Files that define sub-palettes: [fpmopts.inc](https://gitlab.com/freepascal.org/fpc/source/-/blob/main/packages/ide/fpmopts.inc),
 [colorsel.inc](https://gitlab.com/freepascal.org/fpc/source/-/blob/main/packages/fv/src/colorsel.inc)
 
+Files that define default colorscheme: [app.inc](https://gitlab.com/freepascal.org/fpc/source/-/blob/92ebf40f04c5b9b6b41ffd153d553c0a082c5c97/packages/fv/src/app.inc), [fpconst.pas](https://gitlab.com/freepascal.org/fpc/source/-/blob/92ebf40f04c5b9b6b41ffd153d553c0a082c5c97/packages/ide/fpconst.pas)
