@@ -16,7 +16,7 @@ void output_palette(palette_entry_t *palette) {
     printf("\n");
 }
 
-int main() {
+int main(void) {
     palette_entry_t palette[PALETTE_SIZE];
     size_t i;
 

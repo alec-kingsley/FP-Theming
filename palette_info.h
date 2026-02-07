@@ -8,8 +8,6 @@
 
 typedef uint8_t palette_entry_t;
 
-typedef enum { BLUE, CYAN, GRAY } main_palette_colors_t;
-
 #define BLUE_WINDOW_PALETTE_OFF 7
 #define CYAN_WINDOW_PALETTE_OFF 15
 #define GRAY_WINDOW_PALETTE_OFF 23
