@@ -2,3 +2,6 @@
 palette_load.c
 palette_gen
 palette_read
+fp.ini
+fp.cfg
+fp.dsk
