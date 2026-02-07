@@ -54,6 +54,12 @@ After this, you can edit the newly generated `palette_load.c` file however you w
 Once you're done making changes, run `make palette_gen` and run `./palette_gen`.
 This will output a new `[Colors]` section to `stdout`, which you can paste in your `fp.ini` file.
 
+### Blue/Cyan/Gray Windows/Dialogs
+
+There are three palettes for each of Windows and Dialogs for blue, cyan, and gray themes of each.
+
+As far as I can tell, only the gray palette is loaded for these.
+
 ## Source Code References
 
 Function to read palette: [strtopalette](https://gitlab.com/freepascal.org/fpc/source/-/blob/92ebf40f04c5b9b6b41ffd153d553c0a082c5c97/packages/ide/fpini.pas#L278)
