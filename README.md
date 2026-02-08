@@ -33,15 +33,24 @@ each enum has a name taken from the FPC source code.
 
 The `themes/` folder contains some pre-made themes.
 
+### Light Themes
+
 `default_color.fp.ini` is the default theme for FP
 
 `default_black_white.fp.ini` and `default_monochrome.fp.ini` are themes from the FPC source code that
 aren't used for FP, modified with FP-specific theming. (For the editor and help menu)
 
-
 `bunnyworks.fp.ini` comes from [here](https://mooncore.eu/bunny/txt/fpidecol.htm)
 
+### Dark Themes
+
 `cyberfilth.fp.ini` comes from [here](https://github.com/cyberfilth/FP-IDE-theme/tree/main)
+
+`dark_monochrome.fp.ini` is a dark version of `default_monochrome.fp.ini`
+
+`hacker_monochrome.fp.ini` is an all green and black theme
+
+`simple_dark.fp.ini` is a dark theme designed to be used with a terminal with the catpuccin mocha colors
 
 Both of the above links document some of the color coding with more detail than the enum names in this repo.
 

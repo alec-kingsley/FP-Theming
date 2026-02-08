@@ -21,11 +21,12 @@ typedef enum {
     window_normal_text
 } window_palette_entry_t;
 
-#define BLUE_DIALOG_PALETTE_OFF 64
-#define CYAN_DIALOG_PALETTE_OFF 96
-#define GRAY_DIALOG_PALETTE_OFF 32
+#define BLUE_DIALOG_PALETTE_OFF 63
+#define CYAN_DIALOG_PALETTE_OFF 95
+#define GRAY_DIALOG_PALETTE_OFF 31
 
 typedef enum {
+    dialog_frame_passive,
     dialog_frame_background,
     dialog_frame_icon,
     dialog_scroll_bar_page,

@@ -175,6 +175,7 @@ static void write_palette_load_c(palette_entry_t *palette) {
 
 
     fprintf(palette_load_c, "void build_blue_dialog_palette(palette_entry_t *palette) {\n");
+    fprintf(palette_load_c, entry_string(palette[BLUE_DIALOG_PALETTE_OFF + dialog_frame_passive]));
     fprintf(palette_load_c, entry_string(palette[BLUE_DIALOG_PALETTE_OFF + dialog_frame_background]));
     fprintf(palette_load_c, entry_string(palette[BLUE_DIALOG_PALETTE_OFF + dialog_frame_icon]));
     fprintf(palette_load_c, entry_string(palette[BLUE_DIALOG_PALETTE_OFF + dialog_scroll_bar_page]));
@@ -216,6 +217,7 @@ static void write_palette_load_c(palette_entry_t *palette) {
     
 
     fprintf(palette_load_c, "void build_cyan_dialog_palette(palette_entry_t *palette) {\n");
+    fprintf(palette_load_c, entry_string(palette[CYAN_DIALOG_PALETTE_OFF + dialog_frame_passive]));
     fprintf(palette_load_c, entry_string(palette[CYAN_DIALOG_PALETTE_OFF + dialog_frame_background]));
     fprintf(palette_load_c, entry_string(palette[CYAN_DIALOG_PALETTE_OFF + dialog_frame_icon]));
     fprintf(palette_load_c, entry_string(palette[CYAN_DIALOG_PALETTE_OFF + dialog_scroll_bar_page]));
@@ -257,6 +259,7 @@ static void write_palette_load_c(palette_entry_t *palette) {
 
 
     fprintf(palette_load_c, "void build_gray_dialog_palette(palette_entry_t *palette) {\n");
+    fprintf(palette_load_c, entry_string(palette[GRAY_DIALOG_PALETTE_OFF + dialog_frame_passive]));
     fprintf(palette_load_c, entry_string(palette[GRAY_DIALOG_PALETTE_OFF + dialog_frame_background]));
     fprintf(palette_load_c, entry_string(palette[GRAY_DIALOG_PALETTE_OFF + dialog_frame_icon]));
     fprintf(palette_load_c, entry_string(palette[GRAY_DIALOG_PALETTE_OFF + dialog_scroll_bar_page]));
