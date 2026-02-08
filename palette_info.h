@@ -116,6 +116,9 @@ typedef enum {
     help_help_links,
     help_selected_link,
     help_selected_text,
+    help_border_inactive,
+    help_border_move,
+    help_border_active,
     help_html_heading1 = 228,
     help_html_heading2,
     help_html_heading3,
@@ -125,7 +128,8 @@ typedef enum {
 } help_palette_entry_t;
 
 typedef enum {
-    syntax_whitespace = 199,
+    syntax_whitespace_offline = 198,
+    syntax_whitespace_inline,
     syntax_comments,
     syntax_reserved_words,
     syntax_identifiers,

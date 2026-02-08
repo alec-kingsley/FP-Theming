@@ -357,6 +357,9 @@ static void write_palette_load_c(palette_entry_t *palette) {
     fprintf(palette_load_c, entry_string(palette[help_help_links]));
     fprintf(palette_load_c, entry_string(palette[help_selected_link]));
     fprintf(palette_load_c, entry_string(palette[help_selected_text]));
+    fprintf(palette_load_c, entry_string(palette[help_border_inactive]));
+    fprintf(palette_load_c, entry_string(palette[help_border_move]));
+    fprintf(palette_load_c, entry_string(palette[help_border_active]));
     fprintf(palette_load_c, entry_string(palette[help_html_heading1]));
     fprintf(palette_load_c, entry_string(palette[help_html_heading2]));
     fprintf(palette_load_c, entry_string(palette[help_html_heading3]));
@@ -367,7 +370,8 @@ static void write_palette_load_c(palette_entry_t *palette) {
 
 
     fprintf(palette_load_c, "void build_syntax_palette(palette_entry_t *palette) {\n");
-    fprintf(palette_load_c, entry_string(palette[syntax_whitespace]));
+    fprintf(palette_load_c, entry_string(palette[syntax_whitespace_offline]));
+    fprintf(palette_load_c, entry_string(palette[syntax_whitespace_inline]));
     fprintf(palette_load_c, entry_string(palette[syntax_comments]));
     fprintf(palette_load_c, entry_string(palette[syntax_reserved_words]));
     fprintf(palette_load_c, entry_string(palette[syntax_identifiers]));

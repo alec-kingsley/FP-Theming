@@ -35,9 +35,9 @@ The `themes/` folder contains some pre-made themes.
 
 `default_color.fp.ini` is the default theme for FP
 
-`default_black_white.fp.ini` is a default theme in the FPC source code unused for FP
+`default_black_white.fp.ini` and `default_monochrome.fp.ini` are themes from the FPC source code that
+aren't used for FP, modified with FP-specific theming. (For the editor and help menu)
 
-`default_monochrome.fp.ini` is another default theme in the FPC source code unused for FP
 
 `bunnyworks.fp.ini` comes from [here](https://mooncore.eu/bunny/txt/fpidecol.htm)
 
@@ -96,7 +96,7 @@ This will output a new `[Colors]` section to `stdout`, which you can paste in yo
 
 There are three palettes for each of Windows and Dialogs for blue, cyan, and gray themes of each.
 
-As far as I can tell, only the gray palette is loaded for these.
+The gray palette is the main palette. Blue is used for debug windows.
 
 ## Source Code References
 
