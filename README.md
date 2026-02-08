@@ -3,8 +3,6 @@
 The FP Pascal IDE has the functionality for theming, however it is not officially documented as far
 as I can tell.
 
-Yes, I recognize that it's ironic that I wrote this in C.
-
 ## How Themes Work
 
 Themes are loaded from your `fp.ini` file from the following lines:
@@ -40,11 +38,11 @@ The `themes/` folder contains some pre-made themes.
 `default_black_white.fp.ini` and `default_monochrome.fp.ini` are themes from the FPC source code that
 aren't used for FP, modified with FP-specific theming. (For the editor and help menu)
 
-`bunnyworks.fp.ini` comes from [here](https://mooncore.eu/bunny/txt/fpidecol.htm)
+`bunnyworks.fp.ini` comes from [here](https://mooncore.eu/bunny/txt/fpidecol.htm)*
 
 ### Dark Themes
 
-`cyberfilth.fp.ini` comes from [here](https://github.com/cyberfilth/FP-IDE-theme/tree/main)
+`cyberfilth.fp.ini` comes from [here](https://github.com/cyberfilth/FP-IDE-theme/tree/main)*
 
 `dark_monochrome.fp.ini` is a dark version of `default_monochrome.fp.ini`
 
@@ -52,7 +50,7 @@ aren't used for FP, modified with FP-specific theming. (For the editor and help 
 
 `simple_dark.fp.ini` is a dark theme designed to be used with a terminal with the catpuccin mocha colors
 
-Both of the above links document some of the color coding with more detail than the enum names in this repo.
+*Both of these links document some of the color coding with more detail than the enum names in this repo.
 
 ## Editing Themes
 
